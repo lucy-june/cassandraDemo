@@ -1,0 +1,55 @@
+http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/?local=true&nav=toc
+https://github.com/datastax/java-driver
+
+https://github.com/datastax/java-driver/tree/3.0/manual/pooling
+http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/logging/?local=true&nav=toc
+http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/paging/?nav=toc&local=true
+http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/idempotence/?local=true&nav=toc
+
+http://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/querybuilder/QueryBuilder.html
+https://docs.datastax.com/en/developer/java-driver/2.0/java-driver/reference/queryBuilder_r.html
+
+http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/object_mapper/using/?nav=toc&local=true
+https://github.com/datastax/java-driver/tree/3.0/manual/object_mapper
+https://github.com/datastax/java-driver/tree/3.0/manual/object_mapper/creating
+https://github.com/datastax/java-driver/tree/3.0/manual/object_mapper/using
+https://datastax.github.io/java-driver/2.1.7/features/object_mapper/creating/
+
+https://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/cassandra
+https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-data-cassandra
+
+
+
+
+1-1: one table         , two table        , idx tables
+1-n: fk with index     , fk + fk list     , idx tables
+m-n: fk list with index, fk list + fk list, idx tables
+
+
+
+partion key: big data good split / small data need select * into one partion
+clustering(->primary) key: unique
+secondery index: every query must have partionkey
+idx_table: which is the redundant table for query.
+
+
+
+partion key: = in -----anywhere
+clusering key: <  >  <=  >= "in on multiple keys" ------ last key restriction
+secondery index: contains containskey --------secondary index on collection
+"Allow Filtering": if query pk not on order / if query index not restrict partionkey
+
+
+
+--atomic batch
+--level transaction (replace insert & overlap update)
+
+
+
+> collections
+> counter
+> ttl
+> writetime
+> user-defined type
+> Tombstones
+
