@@ -5,6 +5,8 @@ https://github.com/datastax/java-driver/tree/3.0/manual/pooling
 http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/logging/?local=true&nav=toc
 http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/paging/?nav=toc&local=true
 http://docs.datastax.com/en/developer/java-driver/3.1/supplemental/manual/idempotence/?local=true&nav=toc
+https://docs.datastax.com/en/cql/3.3/cql/cql_reference/timeuuid_functions_r.html
+https://docs.datastax.com/en/cql/3.3/cql/cql_using/usePrimaryIndex.html
 
 http://docs.datastax.com/en/drivers/java/3.0/com/datastax/driver/core/querybuilder/QueryBuilder.html
 https://docs.datastax.com/en/developer/java-driver/2.0/java-driver/reference/queryBuilder_r.html
@@ -53,3 +55,14 @@ secondery index: contains containskey --------secondary index on collection
 > user-defined type
 > Tombstones
 
+
+
+
+=> mapper
+=> querybuilder
+=> simplestatement
+-> accessor
+-> cql
+
+>> paging
+>> batch

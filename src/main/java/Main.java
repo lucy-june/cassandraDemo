@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Main {
     public static void main(String[] args) {
+        new AwsKeyDto().getAwsAccessKey();
         //builder cluster connection
         Cluster cluster = Cluster.builder()
                 .withClusterName("Hue Cluster")
@@ -104,7 +105,8 @@ public class Main {
 
 
         //use queryBuilder
-        Statement query = QueryBuilder.select().all().from("local");
+        Statement query = QueryBuilder.select().all().from("system","local");
+        //                .where(QueryBuilder.eq("id", UUID.fromString("f6071e72-48ec-4fcb-bf3e-379c8a696488")));
         rs = _session.execute(query);
         rs.forEach(r -> {
             System.out.println("@@@@@@@@@@@@@@@" + r);
@@ -172,6 +174,28 @@ public class Main {
         });
 
 
+        //async query with lambda
+        ListenableFuture<ResultSet> resultSet9 = Futures.transform(
+                session,
+                (AsyncFunction<Session, ResultSet>) session9->session9.executeAsync("select release_version from system.local")
+        );
+
+        ListenableFuture<String> version9 = Futures.transform(
+                resultSet,
+                (Function<ResultSet, String>)rs9->rs9.one().getString("release_version")
+        );
+
+        Futures.addCallback(version9, new FutureCallback<String>() {
+            public void onSuccess(String version9) {
+                System.out.printf("$$$$$$$$$$$$$$$$$$$$$$   Cassandra version: %s%n", version9);
+            }
+
+            public void onFailure(Throwable t) {
+                System.out.printf("$$$$$$$$$$$$$$$$$$$$$$$  Failed to retrieve the version: %s%n",
+                        t.getMessage());
+            }
+        });
+
         //async paging
         Session __session = cluster.connect("system");
         Statement statement3 = new SimpleStatement("select * from sstable_activity").setFetchSize(6);
@@ -222,6 +246,7 @@ public class Main {
         SstableActivity rt1 = sstableActivityAccessor.getPart("demo", "users", 1);
         System.out.println("@~~~~~~~~~~~~~" + rt1);
     }
+
 
 
     @Data
@@ -283,16 +308,21 @@ public class Main {
                     System.out.println("===================Done iterating");
                     return Futures.immediateFuture(rs);
                 } else {
-                    int remainingInPage = rs.getAvailableWithoutFetching();
-
-                    System.out.printf("=================Starting page %d (%d rows)%n", page, remainingInPage);
+//                    int remainingInPage = rs.getAvailableWithoutFetching();
+//
+//                    System.out.printf("=================Starting page %d (%d rows)%n", page, remainingInPage);
+//
+//                    for (Row row : rs) {
+//                        System.out.printf("===============[page %d - %d] row = %s%n", page, remainingInPage, row);
+//                        if (--remainingInPage == 0)
+//                            break;
+//                    }
+//                    System.out.printf("===============Done page %d%n", page);
 
                     for (Row row : rs) {
-                        System.out.printf("===============[page %d - %d] row = %s%n", page, remainingInPage, row);
-                        if (--remainingInPage == 0)
-                            break;
+                        if(rs.getAvailableWithoutFetching()==0) break;
                     }
-                    System.out.printf("===============Done page %d%n", page);
+
 
                     ListenableFuture<ResultSet> future = rs.fetchMoreResults();
                     return Futures.transform(future, iterate(page, cur + 1));
